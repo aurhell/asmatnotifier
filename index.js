@@ -61,29 +61,29 @@ if (recentlyUpdated.length) {
     `
   })
   const body = results.join('\r\n')
-  // console.log(body)
+  console.log(body)
 
-  try {
-    const transporter = nodeMailer.createTransport({
-      host: process.env.MAILER_HOST,
-      port: process.env.PORT,
-      secure: false,
-      auth: {
-        user: process.env.MAILER_AUTH,
-        pass: process.env.MAILER_PASSWORD,
-      },
-    })
+  // try {
+  //   const transporter = nodeMailer.createTransport({
+  //     host: process.env.MAILER_HOST,
+  //     port: process.env.PORT,
+  //     secure: false,
+  //     auth: {
+  //       user: process.env.MAILER_AUTH,
+  //       pass: process.env.MAILER_PASSWORD,
+  //     },
+  //   })
   
-    const message = {
-      from: process.env.FROM,
-      to: process.env.TO,
-      cc: process.env.CC,
-      subject: 'Dispo asmat',
-      text: body,
-    }
+  //   const message = {
+  //     from: process.env.FROM,
+  //     to: process.env.TO,
+  //     cc: process.env.CC,
+  //     subject: 'Dispo asmat',
+  //     text: body,
+  //   }
   
-    transporter.sendMail(message)
-  } catch (error) {
-    console.error(error)
-  }
+  //   transporter.sendMail(message)
+  // } catch (error) {
+  //   console.error(error)
+  // }
 }

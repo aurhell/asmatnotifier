@@ -2,13 +2,8 @@ import dotenv from 'dotenv'
 import fetch from 'node-fetch'
 import { format, formatDistanceStrict } from 'date-fns'
 import nodeMailer from 'nodemailer'
-import cron from 'node-cron'
 
 dotenv.config()
-
-cron.schedule(process.env.CRON, () => {
-  notifier()
-})
 
 const notifier = async () => {
   const NOW = new Date()
@@ -94,3 +89,5 @@ const notifier = async () => {
     }
   }
 }
+
+notifier()

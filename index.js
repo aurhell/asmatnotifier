@@ -32,7 +32,7 @@ const response = await fetch("https://www.assistantsmaternels35.fr/api/assistant
   "method": "POST"
 })
 
-// console.log(`Getting results at ${getDay(NOW)} ${getFullTime(NOW)}`)
+console.log(`Getting results at ${getDay(NOW)} ${getFullTime(NOW)}`)
 
 const data = await response.json()
 

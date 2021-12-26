@@ -1,16 +1,16 @@
 import dotenv from 'dotenv'
 import fetch from 'node-fetch'
-import { format } from 'date-fns'
+import { format, formatDistanceStrict } from 'date-fns'
 import nodeMailer from 'nodemailer'
 
 dotenv.config()
 
-const INTERVAL = 5000
 const NOW = new Date()
+const TIME_VALUES = ['seconds', 'minutes', 'hours']
+const DAY_VALUE = 'days'
 
 const getDay = (date) => format(date, 'yyyy-MM-dd')
 const getFullTime = (date) => format(date, 'HH:mm')
-const getTime = (date) => format(date, 'HH')
 
 const response = await fetch("https://www.assistantsmaternels35.fr/api/assistantsmaternels/recherche/terms", {
   "headers": {
@@ -32,7 +32,7 @@ const response = await fetch("https://www.assistantsmaternels35.fr/api/assistant
   "method": "POST"
 })
 
-console.log(`Getting results for ${getDay(NOW)} ${getFullTime(NOW)}`)
+// console.log(`Getting results at ${getDay(NOW)} ${getFullTime(NOW)}`)
 
 const data = await response.json()
 
@@ -41,10 +41,14 @@ const recentlyUpdated = data.liste.filter((asmat) => {
     return false
   }
   const date = new Date(asmat.dateMAJWeb.date)
-  const day = getDay(date).toString().trim()
-  const hour = parseInt(getTime(date).toString().trim(), 10)
+  const [numericValue, dateValue] = formatDistanceStrict(date, NOW).split(' ')
 
-  return day === getDay(NOW) // TODO: && check hour
+  if (dateValue === DAY_VALUE && numericValue === 1) {
+    return true
+  } else if (TIME_VALUES.includes(dateValue)) {
+    return true
+  }
+  return false
 })
 
 if (recentlyUpdated.length) {
@@ -57,7 +61,7 @@ if (recentlyUpdated.length) {
     `
   })
   const body = results.join('\r\n')
-  console.log(body)
+  // console.log(body)
 
   try {
     const transporter = nodeMailer.createTransport({
